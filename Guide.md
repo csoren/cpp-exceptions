@@ -323,7 +323,7 @@ void ThreadPool::ExecuteTasks() {
     }
     catch (std::exception& ex) {
       // We can't recover from this but want to keep running our tasks.
-      Log::Info("Task exited due to exception " + ex->what());
+      Log::Info("Task exited due to exception " + ex.what());
     }
     catch (...) {
       // We can't recover from this but want to keep running our tasks.
