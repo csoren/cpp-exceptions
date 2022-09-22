@@ -249,7 +249,7 @@ catch (...) {
 delete[] aBuffer;
 ```
 
-C++ does not have finally blocks, the language doesn't need them. A much better solution is to embrace [the RAII principle](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization) and use smart pointers to make sure no resources leak when an exception is thrown.
+C++ does not have `finally` blocks, the language doesn't need them. A much better solution is to embrace [the RAII principle](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization) and use smart pointers to make sure no resources leak when an exception is thrown.
 
 A better solution:
 ```
@@ -291,8 +291,7 @@ try {
   // ...
 }
 catch (EndOfFileException& e) {
-  throw ExpectedTokenException("Expected a valid token but encountered "
-                               "end of file");
+  throw ExpectedTokenException("Expected a valid token but encountered end of file");
 }
 ```
 
