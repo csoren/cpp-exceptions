@@ -12,7 +12,7 @@ Exceptions should never be used to indicate an expected state. An stream represe
 Never use exceptions to carry information down the call stack, other than information describing the exceptional event.
 
 ## 1.1. Use the STL exception classes
-C++ exceptions give you, like most of the language's features, plenty of rope with which to shoot yourself in the foot. Don't give into the temptation of throwing a second rate `char *` or `int`, you can do much better. The STL defines a number of [standard exception classes](http://www.cplusplus.com/reference/std/stdexcept/) that can be used to indicate runtime errors and logic errors. Use these whenever possible, a `char *` or `int` is not distinguishable as a class of error and makes it impossible for the user to choose an appropriate course of action without assinging a meaning to the value.
+C++ exceptions give you, like most of the language's features, plenty of rope with which to shoot yourself in the foot. Don't give into the temptation of throwing a second rate `char *` or `int`, you can do much better. The STL defines a number of [standard exception classes](https://cplusplus.com/reference/stdexcept/) that can be used to indicate runtime errors and logic errors. Use these whenever possible, a `char *` or `int` is not distinguishable as a class of error and makes it impossible for the user to choose an appropriate course of action without assinging a meaning to the value.
 
 Don't:
 
@@ -35,7 +35,7 @@ void MyClass::ToString() const {
 
 Derive from the STL hierarchy of exception classes when you want your exception to be particularly distinguishable in a catch block. Do *not* invent your own exception base class.
 
-# 1.1.3. Use built-in data types exclusively when designing exception classes
+## 1.1.3. Use built-in data types exclusively when designing exception classes
 
 When you design your own exception classes, member variables should be PODs (plain old datatypes such as `int` or `char *`) or classes behaving as PODs. Do not aggregate expensive objects such as `std::string` or STL containers in your exception classes. These require initialization and heap allocations, which might throw exceptions.
 
