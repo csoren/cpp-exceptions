@@ -9,10 +9,10 @@ Great opportunities for exceptions include invalid tokens when parsing, checksum
 
 Exceptions should never be used to indicate an expected state. An stream representing a file on disk is expected to end at some point. Do not use an exception to indicate that the stream has ended, but do throw an exception if an attempt to actually read past the end was performed by the user. That's a programmer error and should be flagged as such.
 
-Never use exceptions to carry information down the call stack, other than information describing the exceptional event.
+Never use exceptions to carry data or information down the call stack, other than information describing the exceptional event.
 
 ## 1.1. Use the STL exception classes
-C++ exceptions give you, like most of the language's features, plenty of rope with which to shoot yourself in the foot. Don't give into the temptation of throwing a second rate `char *` or `int`, you can do much better. The STL defines a number of [standard exception classes](https://cplusplus.com/reference/stdexcept/) that can be used to indicate runtime errors and logic errors. Use these whenever possible, a `char *` or `int` is not distinguishable as a class of error and makes it impossible for the user to choose an appropriate course of action without assinging a meaning to the value.
+C++ exceptions give you, like most of the language's features, plenty of rope with which to shoot yourself in the foot. Don't give into the temptation of throwing a second rate `char *` or `int`, you can do much better. The STL defines a number of [standard exception classes](https://cplusplus.com/reference/stdexcept/) that can be used to indicate runtime errors and logic errors. Use these whenever possible, a `char *` or `int` is not distinguishable as a class of error and makes it impossible for the user to choose an appropriate course of action without assigning a meaning to the value.
 
 Don't:
 
@@ -120,8 +120,7 @@ catch (std::exception* ex) {
 Do:
 ```
 try {
-  throw std::exception("Throwing a temporary object, instantiated directly on "
-                       "the exception frame");
+  throw std::exception("Throwing a temporary object, instantiated directly on the exception frame");
 }
 catch (std::exception& ex) {
   Log::Info("Exception" + ex.what());
