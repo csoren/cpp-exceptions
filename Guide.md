@@ -42,7 +42,7 @@ When you design your own exception classes, member variables should be PODs (pla
 ## 1.1.4. Don't throw exceptions when constructing or destroying exception objects
 Exception class constructors *should* be strictly `noexcept`, exception class destructors must *never* throw an exception. Throwing an exception while `delete`'ing an exception object as part of a stack unwind will cause an unrecoverable error and a call to `std::terminate`.
 
-There are legitimate uses of throwing an exception in constructors, for instance when a memory allocation fails. There is no other way to communicate this error.
+There are legitimate uses of throwing an exception in constructors, for instance when a memory allocation fails. There is no other way to communicate this error, but you will be throwing a completely different exception than what you intended.
 
 STL exceptions' constructors, destructors and assignment operators are marked `noexcept`, try to follow this pattern.
 
@@ -149,10 +149,10 @@ void MyThrow(const std::exception& ex) {
 }
 ```
 
-Note, however, that you're throwing an `std::exception` - not an instance of ex's dynamic type. Yes, this is indeed the well-known [C++ slicing problem](http://en.wikipedia.org/wiki/Object_slicing). If `ex` is really an `std::runtime_error`, the object will be sliced so only the `std::exception` portion is left, discarding any data or overridden methods in `std::runtime_error` - including `what()`. Be very, very careful when throwing references to exceptions. You rarely get what you want.
+Note, however, that you're throwing an `std::exception` - not an instance of `ex`'s dynamic type. Yes, this is indeed the well-known [C++ slicing problem](http://en.wikipedia.org/wiki/Object_slicing). If `ex` is really an `std::runtime_error`, the object will be sliced so only the `std::exception` portion is left, discarding any data or overridden methods in `std::runtime_error` - including `what()`. Be very, very careful when throwing references to exceptions. You rarely get what you want.
 
 ## 1.5. Re-throw without arguments
-If you have to re-throw a caught exception, `throw` without arguments is almost always what you want to do. If you do supply an argument, the object will be sliced. `throw `without arguments will re-throw the exception polymorphically, reusing the exception frame.
+If you have to re-throw a caught exception, `throw` without arguments is almost always what you want to do. If you do supply an argument, the object will be sliced. `throw` without arguments will re-throw the exception polymorphically, reusing the exception frame.
 
 Don't:
 ```
@@ -348,7 +348,7 @@ catch (std::exception ex) {
 ```
 
 ## 2.6. Catch by reference
-Always catch by reference. Catching by reference avoids copying the exception from the exception frame onto the stack. You can catch by const reference if you wish - it’s very nice of you to tell the world about the constness fact, but really - nobody’s listening. In most cases const is just noise as exception classes should be immutable, but add it if that's your style.
+Always catch by reference. Catching by reference avoids copying the exception from the exception frame onto the stack. You can catch by `const` reference if you wish - it’s very nice of you to tell the world about the constness fact, but really - nobody’s listening. In most cases `const` is just noise as exception classes should be immutable, but add it if that's your style.
 
 Do:
 ```
